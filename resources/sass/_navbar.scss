@@ -1,0 +1,92 @@
+$background-color: #768769;
+$active-color: #FF005C;
+
+div.navbar-second-background{
+  position: fixed;
+  background-color: $background-color;
+  height: 80px;
+  width: 100%;
+  z-index: 1;
+}
+
+@media (max-width: 800px) {
+  h2.navbar__slogan{
+    font-size: 18px;
+  }
+}
+
+div.navbar{
+  position: relative;
+  width: 100%;
+  // height: 200px;
+  background-color: #768769;
+  // background-image: url(/images/unsplash/planit/oxana-v-qoAIlAmLJBU-unsplash.jpg);
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  // background-position: bottom right;
+  // background-attachment: fixed;
+  min-height: 80px;
+  z-index: 2;
+}
+nav.navbar--fixed{
+  position: fixed;
+  display: inline-flex;
+  justify-content: space-between;
+  height: 82px;
+  width: 100%;
+  margin-bottom: 25px;
+  z-index: 3;
+}
+div.navbar__title{
+  display: inline;
+  font-size: 32px;
+  float: right;
+  position: relative;
+  padding: 0 5% 0 5%;
+  margin:0px;
+}
+ul.navbar__items{
+  list-style-type: none;
+  position: relative;
+  display: flex;
+  /*justify-content: space-between;*/
+  gap: 5%;
+  width: 70%;
+}
+li:first-child.navbar__item{
+  border: 4px solid $active-color;
+  border-radius: 24px;
+}
+li:first-child.navbar__link{
+  color: $active-color;
+}
+li.navbar__item{
+  display: inline;
+  background: none;
+  font-size: 14px;
+  text-align: center;
+  padding: 0 1% 0 1%;
+}
+a.navbar__link{
+  color: white;
+  text-decoration: none;
+}
+a:hover.navbar__link{
+  color: $active-color;
+}
+h2.navbar__slogan{
+  height: auto;
+  margin: 30px 0 0 0;
+  text-align:center;
+  padding: 0;
+  color:  white;
+}
+span.navbar__slogan{
+  color: yellow;
+}
+img.navbar{
+  width: 100%;
+  height: 120px;
+  position: absolute;
+  object-fit: cover;
+}

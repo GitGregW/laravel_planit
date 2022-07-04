@@ -1,0 +1,38 @@
+$background-color: #768769;
+$active-color: #FF005C;
+
+div.footer{
+  box-sizing: border-box;
+  height: 210px;
+  width: 100%;
+  margin-top: 20px;
+  background-color: $background-color;
+  padding: 3% 5% 3% 5%;
+}
+div.footer__head{
+  display: inline-block;
+  width: 40%;
+}
+div.footer__body{
+  display: inline-flex;
+  float: right;
+}
+div.footer__links--vertical{
+  position: relative;
+  display: inline;
+  flex-direction: column;
+  padding: 0 10% 0 10%;
+}
+div.footer__links{
+  position: relative;
+  display: flex;
+  gap: 10%;
+}
+a.footer__link{
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+a:hover.footer__link{
+  color: $active-color;
+}

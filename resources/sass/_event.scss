@@ -1,0 +1,62 @@
+
+.images__container{
+    display: flex;
+    align-items:stretch;
+    height: 480px;
+    gap: 1%;
+    padding: 5% 5% 1% 5%;
+}
+
+.image__shrink{
+    flex-shrink: 2;
+    // padding: 0 5em;
+}
+
+.image__rounded{
+    border-radius: 4px;
+}
+
+.event__header{
+    display: flex;
+    padding: 1% 8%;
+}
+
+.event__header__content{
+    width: 70%;
+}
+
+.event__header__title{
+    display: inline;
+}
+
+.event__header__rating{
+    display: inline;
+    padding-left: 2em;
+}
+
+.event__header__body{
+    text-align: justify;
+    padding: 0.5em 1.5em;
+}
+
+.event__header__contact{
+    width: 30%
+}
+
+.event__map{
+    width: 80%;
+    height: 360px;
+}
+
+svg.icon--star {
+    margin: auto 5px;
+    stroke: yellow;
+    fill: yellow;
+    width: 14px;
+    height: 14px;
+}
+
+svg:hover.icon--star{
+    fill: rgb(255, 255, 128);
+    stroke: rgb(255, 255, 128);
+}

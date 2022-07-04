@@ -1,0 +1,137 @@
+@use "navbar";
+@use "footer";
+@use "cards";
+@use "event";
+@use "calendar";
+@use "create";
+@use "fonts";
+
+
+$font-stack: Helvetica, sans-serif;
+$primary-color: #000000;
+$secondary-color: #ffffff;
+
+$active-color: #FF005C;
+$inactive-color: #81BBFF;
+
+$background-color: #768769;
+
+*{
+  box-sizing: border-box;
+  font-family: 'calibri light';
+  font-style: normal;
+  font-weight: 400;
+  color: $primary-color;
+}
+body{
+  margin: 0px;
+}
+
+a, h1, h2, h3, h4, h5, span, legend{
+  font-family: 'Bungee';
+}
+
+.feather {
+  width: 24px;
+  height: 24px;
+  stroke: white;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+svg.icon{
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.form__fieldset{
+  background-color: white;
+  border: none;
+  border-radius: 24px;
+  width: 35%;
+  min-width: fit-content;
+  margin: 0.5em 5%;
+  // width: fit-content;
+  // margin: 0.5em 33%;
+  padding: 0.5em 1em;
+  display: block;
+}
+
+.form__fieldset > input{
+  display: block;
+  width: 11em;
+  margin: 0.5em 2em;
+}
+
+.form__fieldset > legend{
+  // background-color: white;
+  // border: black 1px solid;
+  // border-radius: 3px;
+  margin: auto;
+  padding-bottom: 1.5em;
+  color: white;
+}
+
+form > button{
+  margin: auto;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0.5em;
+  height: 0.5em;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 1em;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #12B9EE;
+  border-radius: 1em;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #10A5D4; 
+}
+
+/*
+@mixin my-font($primary-colour){
+  font-family: 'Bungee';
+  font-style: normal;
+  font-weight: 400;
+  color: $primary-color;
+}
+
+
+@mixin button-mix($color){
+  padding: 0px 16px;
+  height: 48px;
+  background: #ffffff;
+  /* Bottom Border - Active */ /*
+  box-shadow: 0px 6px 0px $color;
+  font-size: 18px;
+  text-align: center;
+  color: $color;
+}
+
+.button-active{
+  $color: $active-color;
+  @include button-mix($color);
+}
+
+.button{
+  $color: $inactive-color;
+  @include button-mix($color);
+}
+*/

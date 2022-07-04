@@ -1,0 +1,115 @@
+$inactive-color: #81BBFF;
+
+@media (max-width: 800px) {
+    div.calendar{
+      border: 0;
+      width: 100%;
+      padding: 0;
+      margin: 1%;
+    }
+  }
+
+//headers
+div.calendar__container{
+    width: 100%;
+}
+div.calendar__header{
+    width: 100%;
+    text-align: center;
+}
+span.calendar__selector{
+    display: inline;
+}
+
+//labels
+div.calendar__label{
+    width: 100%;
+    text-align: center;
+    border-top: 2px solid $inactive-color;
+    border-bottom: 2px solid $inactive-color;
+}
+div:first-child.calendar__label{
+    border-left: 2px solid $inactive-color;
+}
+div:nth-child(7).calendar__label{
+    border-right: 2px solid $inactive-color;
+}
+
+div.calendar__date{
+    position: absolute;
+    top: 0;
+    right: 0.5em;
+    margin-top: 0.1em;
+    text-align: center;
+    min-width: 1.5em;
+    // height: inherit;
+    
+    // background-color: #81BBFF;
+    // padding: 0.2em;
+    // border-radius: 1em;
+    
+    // color: white;
+    
+}
+
+//content
+div.calendar{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    width: 85%;
+    height: auto;
+    margin: 0 7.5% 0 7.5%;
+    padding: 20px;
+    border: 4px solid yellow;
+    border-radius: 24px;
+}
+div.calendar__day{
+    position: relative;
+    width: 100%;
+    min-height: 6em;
+    height: auto;
+    border: 1px solid rgb(224, 224, 224);
+    border-bottom: 1px solid grey;
+    padding: 1.5em 0.5em;
+    padding-bottom: 0;
+}
+.day--blank{
+    background-color: rgb(224, 224, 224);
+}
+.calendar__day:hover{
+    border: $inactive-color solid 1px;
+    border-radius: 2px;
+}
+ul.calendar__events{
+    display: inline;
+    list-style-type: none;
+    width: 100%;
+    min-height: 100px;
+    padding-left: 5%;
+    margin: 0;
+    line-height: 30px;
+}
+li.calendar__events{
+    background-color: $inactive-color;
+    margin: 5px 0 5px 5px;
+    padding: 0 5px 0 15px;
+    border-top-left-radius: 24px;
+    border-bottom-left-radius: 24px;
+    font-family: 'calibri light';
+    font-style: normal;
+    font-weight: 400;
+    position: relative;
+    min-height: 30px;
+}
+li.calendar__events2{
+    background-color: lightpink;
+    margin: 5px;
+    padding: 0 5px 0 15px;
+    border: 1px solid lightpink;
+    border-radius: 24px;
+    font-family: 'calibri light';
+    font-style: normal;
+    font-weight: 400;
+    position: relative;
+    min-height: 30px;
+}
