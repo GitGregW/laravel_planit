@@ -1,31 +1,52 @@
-<div class="calendar__label">Mon</div>
-<div class="calendar__label">Tue</div>
-<div class="calendar__label">Wed</div>
-<div class="calendar__label">Thu</div>
-<div class="calendar__label">Fri</div>
-<div class="calendar__label">Sat</div>
-<div class="calendar__label">Sun</div>
-
-@props(['selected_date'])
+@props(['selected_date','event'])
 
 @php
-$num_of_days =  date("t", $selected_date);
-$month_start = date("01-m-Y",$selected_date);
-$day_of_week =  intval(date("N", strtotime($month_start))); // 1 (for Monday) through 7 (for Sunday)
-$fill_day = false;
-$day_number = 1;
+// dd($event['event_opening_times'][1]['day']);
+$day_labels = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
+$days =  date("t", $selected_date);
+$month_start = date("01-M-Y",$selected_date);
+$day_start =  intval(date("N", strtotime($month_start))); // 1 (for Monday) through 7 (for Sunday)
+$day_i = 1;
+$calendar_rows = ceil(($days + ($day_start - 1)) / 7);
+$blank_ends = ($calendar_rows * 7) - ($days + $day_start);
+
+foreach($event->event_opening_times as $opening_time){
+    ## Make days_open as "[0] => 'Friday'" ## REVIEW changing to id only.
+    for ($i=0; $i < $calendar_rows; $i++) {
+        $keys[] = ((array_search($opening_time->day, $day_labels) + ($day_start - 2)) + (7 * $i) - 7);
+        $opening_days[] = $opening_time->id;
+        $open_time[] = $opening_time->opening_time;
+        $close_time[] = $opening_time->closing_time;
+    }
+    $days_open = array_combine($keys, $opening_days);
+    $times_open = array_combine($keys, $open_time);
+    $times_close = array_combine($keys, $close_time);
+}
+
 @endphp
-@for ($i = 0; $i < 35; $i++)
-@if(!$fill_day && $i+1 === $day_of_week)
-    @php($fill_day = true)
-@endif
-@if($fill_day && $day_number <= date("t", $selected_date))
-    <x-calendar.day :day="$day_number" />
-    @php($day_number++)
-@else
-    <x-calendar.day :day=false />
-@endif
+
+@foreach ($day_labels as $day_label)
+    <div class="calendar__label">{{ $day_label }}</div>
+@endforeach
+
+@for ($i = 1; $i < $day_start; $i++)
+    <x-calendar.day :day_i=false :date=false class="day--blank" />
 @endfor
+
+@for ($i = 0; $i < $days; $i++)
+    @if (array_key_exists($i, $days_open))
+    <x-calendar.day :day_i="$day_i" :date="date('Y-m-').$day_i" :open="$times_open[$i]" :close="$times_close[$i]" class="calendar__day--active" />
+    {{-- :date="$days_open[$i]" --}}
+    @else
+    <x-calendar.day :day_i="$day_i" :date=false class="day--blank" />
+    @endif
+    @php($day_i++)
+@endfor
+
+@for ($i = 0; $i <= $blank_ends; $i++)
+    <x-calendar.day :day_i=false :date=false class="day--blank" />
+@endfor
+
 
 {{-- <div class="calendar__day">
 <div class="calendar__date">1</div>

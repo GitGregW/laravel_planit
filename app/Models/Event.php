@@ -12,7 +12,7 @@ class Event extends Model
 
     protected $guarded = [];
 
-    protected $with = ['event_image', 'event_category'];
+    // protected $with = ['event_image', 'event_category', 'event_opening_times'];
     
     // protected function slug(): Attribute
     // {
@@ -28,7 +28,12 @@ class Event extends Model
 
     public function event_category()
     {
-        return $this->hasMany(EventCategory::class);
+        return $this->belongstoMany(Category::class,'event_categories','event_id','category_id');
+    }
+
+    public function event_opening_times()
+    {
+        return $this->hasMany(EventOpeningTime::class);
     }
 
     public function event_booking()

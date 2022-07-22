@@ -20,6 +20,7 @@ class EventFactory extends Factory
         $title = ucwords(str_replace('-',' ',$slug));
 
         return [
+            'user_id' => $this->faker->randomDigitNot(0),
             'event_image_id' => $this->faker->randomDigitNot(0),
             'event_category_id' => $this->faker->randomDigitNot(0),
             'event_booking_id' => $this->faker->randomDigitNot(0),

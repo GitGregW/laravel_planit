@@ -131,7 +131,7 @@ class DatabaseSeeder extends Seeder
             'christmas','halloween','new_years_day',
             'nature',
             'water_sports',
-            'kart_racing',
+            'go_karting',
             'street_food','beer_festival',
             'art_exhibition',
             'classic_car_show',

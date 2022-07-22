@@ -84,9 +84,11 @@ h2.card__title{
 
 p.card__text{
     display: inline-block;
-    height: 64px;
+    max-height: 38%;
+    height: 12em;
     text-align: justify;
     margin: 0 10px;
+    overflow: hidden;
 }
 
 div.card__tags{

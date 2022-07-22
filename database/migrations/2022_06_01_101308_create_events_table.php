@@ -15,16 +15,14 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_image_id');
-            $table->foreignId('event_category_id');
-            $table->foreignId('event_booking_id');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('slug')->unique();
             $table->string('title');
             $table->text('body');
-            $table->string('Address_line_1', 100);
-            $table->string('Address_line_2', 100);
-            $table->string('Address_city', 100);
-            $table->string('Address_county', 100);
+            $table->string('address_line_1', 100);
+            $table->string('address_line_2', 100);
+            $table->string('address_city', 100);
+            $table->string('address_county', 100);
             $table->string('postcode', 10);
             $table->string('contact_mobile', 20);
             $table->string('contact_landline', 20);

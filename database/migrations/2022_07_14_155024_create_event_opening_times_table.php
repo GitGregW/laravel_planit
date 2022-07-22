@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('event_bookings', function (Blueprint $table) {
+        Schema::create('event_opening_times', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->dateTime('date');
-            $table->decimal('price', 5, 2)->nullable();
-            $table->decimal('discount', 3, 2)->nullable();
+            $table->string('day', 100)->nullable();
+            $table->time('opening_time');
+            $table->time('closing_time');
+            $table->date('custom_date')->nullable();
+            $table->boolean('custom_repeat_yearly')->nullable();
+            $table->integer('max_capacity')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('event_bookings');
+        Schema::dropIfExists('event_opening_times');
     }
 };
