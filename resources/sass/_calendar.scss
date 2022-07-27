@@ -25,6 +25,8 @@ div.calendar__container{
 div.calendar__label{
     width: 100%;
     text-align: center;
+    margin-top: auto;
+    padding: 0.5em 0;
     border-top: 2px solid $inactive-color;
     border-bottom: 2px solid $inactive-color;
 }
@@ -173,8 +175,7 @@ div.booking__planner{
 }
 div.booking__header{
     justify-content: space-around;
-    height: 5em;
-    margin: 0;
+    margin-top: 1em;
 }
 div.booking__planner__widgets{
     height: 44em;
@@ -183,7 +184,7 @@ div.booking__planner__widgets{
 div.modal{
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 2;
     padding-top: 10rem;
     left: 0;
     top: 0;
@@ -206,7 +207,6 @@ select.calendar__day__slots{
     gap: 0.2em;
     position: absolute;
     z-index: 1;
-    right: 0.5em;
     background-color: white;
     border: solid 1px lightblue;
     border-radius: 0.2em;

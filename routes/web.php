@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventBookingController;
+use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,20 +28,21 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-// Route::get('events', function () {
-//     return view('events', [
-//         'events' => App\Models\Event::all()
-//     ]);
-// });
+Route::get('login', [SessionController::class, 'create'])->middleware('guest');
+Route::post('login', [SessionController::class, 'store']);
+Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth');
 
-// Objective: limit Event controller to Index + CRUD as a set standard
+// Objective: RESTful Events Controller
+    // Route::resource('events', EventController::class); //->except('show');
 Route::get('events', [EventController::class, 'index'])->name('events');
+Route::post('events', [EventController::class, 'store']);
 Route::get('events/create', [EventController::class, 'create']);
-Route::post('events/create', [EventController::class, 'store']);
-Route::get('events/{event:slug}', [EventController::class, 'show']);
 Route::get('events/{event:slug}/edit', [EventController::class, 'edit']);
-Route::get('events/{event:slug}/edit', [EventController::class, 'update']);
+Route::get('events/{event:slug}', [EventController::class, 'show']);
+// Route::patch('events/{event:slug}', [EventController::class, 'update']);
+// Route::destroy('events/{event:slug}', [EventController::class, 'destroy']);
 
-Route::get('bookings/create', [EventBookingController::class, 'create']);
-Route::get('bookings/create', [EventBookingController::class, 'store']);
-Route::get('bookings/{event:slug}', [EventBookingController::class, 'show']);
+Route::get('events/{event:slug}', [EventController::class, 'show']);
+Route::get('bookings/{event:slug}/{selected_date?}', [EventBookingController::class, 'show']);
+Route::post('bookings/{event:id}', [EventBookingController::class, 'store']);
+

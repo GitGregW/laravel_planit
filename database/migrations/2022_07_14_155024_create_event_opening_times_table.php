@@ -23,6 +23,8 @@ return new class extends Migration
             $table->boolean('custom_repeat_yearly')->nullable();
             $table->integer('max_capacity')->nullable();
             $table->timestamps();
+
+            $table->unique(['event_id', 'day'], 'unique_event_day');
         });
     }
 

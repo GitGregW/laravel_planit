@@ -1,8 +1,8 @@
 @props(['event'])
 
 @php
-    if(empty($event->event_image[0])) $image_source= '/images/unsplash/events/jason-leung-4BKiS_BgOwI-unsplash.jpg';
-    else $image_source = $event->event_image[0]->src;
+    if(empty($event->event_images)) $image_source= '/images/unsplash/events/jason-leung-4BKiS_BgOwI-unsplash.jpg';
+    else $image_source = $event->event_images[0]->src;
     //$image_source= '/images/unsplash/events/jason-leung-4BKiS_BgOwI-unsplash.jpg';
     list($width, $height) = getimagesize('.'.$image_source);
     $is_portrait = false;

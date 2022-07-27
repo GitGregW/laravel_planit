@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot name="content">
         <div class="images__container">
-            @foreach ($event->event_image as $image)
+            @foreach ($event->event_images as $image)
                 @php
                 list($width, $height) = getimagesize('.'.$image->src);
                 $is_portrait = false;
@@ -17,16 +17,7 @@
 
         <div class="event__header">
             <div>
-                <button style="display: block"><a href="/plans/{{ $event->slug }}">Plan Now</a></button>
-                {{-- <div>
-                    // Show event calendar
-                    <input type="date" name="selected_date" id="selected_date">
-                    <input type="time" name="selected_time" id="selected_time">
-                </div>
-                <div>
-                    // List personal calendar
-
-                </div> --}}
+                <button style="display: block"><a href="/bookings/{{ $event->slug }}">Plan Now</a></button>
             </div>
             <div class="event__header__content">
                 
@@ -36,7 +27,7 @@
                                 style="vertical-align: baseline"><use href="/icons/feather-sprite.svg#star"/></svg>
                         {{$event->rating}}</span>
                     <div>
-                        @foreach ($event->event_category as $category)
+                        @foreach ($event->categories as $category)
                             <span class="event__category__pill">{{$category->name}}</span>
                         @endforeach
                     </div>

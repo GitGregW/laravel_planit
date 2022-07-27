@@ -12,8 +12,9 @@ $blank_ends = ($calendar_rows * 7) - ($days + $day_start);
 
 foreach($event->event_opening_times as $opening_time){
     ## Make days_open as "[0] => 'Friday'" ## REVIEW changing to id only.
+    $day_key = array_search($opening_time->day, $day_labels);
     for ($i=0; $i < $calendar_rows; $i++) {
-        $keys[] = ((array_search($opening_time->day, $day_labels) + ($day_start - 2)) + (7 * $i) - 7);
+        $keys[] = ($day_key + ($i * 7)) - ($day_start - 1);
         $opening_days[] = $opening_time->id;
         $open_time[] = $opening_time->opening_time;
         $close_time[] = $opening_time->closing_time;

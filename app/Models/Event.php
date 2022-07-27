@@ -21,12 +21,12 @@ class Event extends Model
     //     );
     // }
 
-    public function event_image()
+    public function event_images()
     {
         return $this->hasMany(EventImage::class);
     }
 
-    public function event_category()
+    public function categories()
     {
         return $this->belongstoMany(Category::class,'event_categories','event_id','category_id');
     }
@@ -36,7 +36,7 @@ class Event extends Model
         return $this->hasMany(EventOpeningTime::class);
     }
 
-    public function event_booking()
+    public function event_bookings()
     {
         return $this->hasMany(EventBooking::class);
     }

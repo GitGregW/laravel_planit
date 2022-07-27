@@ -53,12 +53,12 @@ class EventController extends Controller
         }
         DB::table('event_images')->insert($event_images);
 
-        $event_categoies = [];
+        $event_categories = [];
         foreach (request()->input('event_categories') as $key => $category_id) {
-            $event_categoies[$key]['event_id'] = $id;
-            $event_categoies[$key]['category_id'] = $category_id;
+            $event_categories[$key]['event_id'] = $id;
+            $event_categories[$key]['category_id'] = $category_id;
         }
-        DB::table('event_categories')->insert($event_categoies);
+        DB::table('event_categories')->insert($event_categories);
 
         ## Only require Opening Times records where given time inputs are present.
         $event_opening_times = request()->input('event_opening_times');

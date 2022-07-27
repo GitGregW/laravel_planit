@@ -2,27 +2,34 @@
 <link rel="stylesheet" href="/css/styles.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<div class="navbar-second-background"></div>
-<div class="navbar">
-    <nav class="navbar--fixed">
-        <ul class="navbar__items">
-            <li class="navbar__item"><a class="navbar__link" href="/events">Explore</a></li>
-            <li class="navbar__item"><a class="navbar__link" href="/plans">Plans</a></li>
-        </ul>
-        <div class="navbar__title">
-            <a class="navbar__link" href="/"><span style="color:yellow;">PLAN</span>IT.</a>
-        </div>
+<div class="navbar__container">
+    <nav class="navbar">
+        <a class="navbar__link {{ request()->is('events') ? 'navbar__link--active' : '' }}"
+            href="/events">Explore</a>
+        <a class="navbar__link {{ request()->is('plans') ? 'navbar__link--active' : '' }}"
+            href="/plans">Plans</a>
     </nav>
-    {{-- <div style="height: 65px; width:inherit;"></div>
-    <h2 class="navbar__slogan">
-        <span class="navbar__slogan">Explore</span> - <span class="navbar__slogan">Plan</span> - <span class="navbar__slogan">Do</span>
-    </h2> --}}
-    @if (session()->has('success'))
-        <div>
-            <p>{{ session('success') }}</p>
-        </div>
-    @endif
+
+    <div class="navbar__title">
+        <a class="navbar__link navbar__link--title" href="/"><span style="color:yellow;">PLAN</span>IT.</a>
+    </div>
+
+    <nav class="navbar navbar--right">
+        @auth
+        <a href="/plans">{{ auth()->user()->name }} Plans</a>
+            <a class="navbar__link" href="/logout">Logout</a>
+        @else
+            <a class="navbar__link {{ request()->is('login') ? 'navbar__link--active' : '' }}"
+                href="/login">Login</a>
+        @endauth
+    </nav>
 </div>
+
+@if (session()->has('success'))
+<div>
+    <p>{{ session('success') }}</p>
+</div>
+@endif
 
 <body>
 {{ $content }}

@@ -4,6 +4,11 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\EventOpeningTime;
+use App\Models\EventBooking;
+use App\Models\Event;
+use App\Models\Category;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,8 +19,42 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-        \App\Models\Event::factory(9)->create();
+        // Hard-coded assortment of categories
+        // [C] Could break the Category table entries into a new SubCategory table.
+        $categories_arr = array('nature','water_sports','go_karting',
+            'street_food','beer_festival','classic_cars','music_performance','history',
+            'christmas','halloween','new_years_day');
+
+        $categories = Category::factory()
+            ->count(count($categories_arr))
+            ->sequence(fn ($sequence) => [
+                'name' => ucwords(str_replace('_',' ', $categories_arr[$sequence->index])),
+                'slug' => $categories_arr[$sequence->index]
+                ])
+            ->create();
+
+        $users = User::factory()->count(4)->create();
+
+        // $day_labels = collect(['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']);
+        // Every Event consits of 5 opening day times
+        Event::factory()
+            ->count(9)
+            ->hasAttached($categories->shuffle()->take(4))
+            ->create()
+            ->each(function ($event){
+                $days = collect(['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'])->shuffle()->take(5);
+                EventOpeningTime::factory()
+                    ->count(5)
+                    ->sequence(fn ($sequence) => ['day' => $days[$sequence->index]])
+                    ->for($event)
+                    ->create();
+            });
+
+        // Hardcoded seed factory in EventBooking for: User Count 4 & Event Count 9
+        $event_bookings = EventBooking::factory()->count(12)->create();
+            // ->count(4)
+            // ->for($event)
+            // ->create();
 
         \App\Models\EventImage::create([
             'event_id' => '1',
@@ -124,26 +163,5 @@ class DatabaseSeeder extends Seeder
             'is_secondary' => true,
             'src' => '/images/unsplash/events/shanna-camilleri-ljNQxfyN7AM-unsplash.jpg'
         ]);
-
-        // Hard-coded assortment of categories
-            // [C] Could break the Category table entries into a new SubCategory table.
-        $categories = array(
-            'christmas','halloween','new_years_day',
-            'nature',
-            'water_sports',
-            'go_karting',
-            'street_food','beer_festival',
-            'art_exhibition',
-            'classic_car_show',
-            'music_performance',
-            'history'
-        );
-
-        foreach($categories as $category){
-            \App\Models\Category::create([
-                'slug' => $category,
-                'name' => ucwords(str_replace('_',' ',$category)),
-            ]);
-        }
     }
 }

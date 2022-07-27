@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Event>
@@ -20,10 +21,8 @@ class EventFactory extends Factory
         $title = ucwords(str_replace('-',' ',$slug));
 
         return [
-            'user_id' => $this->faker->randomDigitNot(0),
-            'event_image_id' => $this->faker->randomDigitNot(0),
-            'event_category_id' => $this->faker->randomDigitNot(0),
-            'event_booking_id' => $this->faker->randomDigitNot(0),
+            // 'user_id' => User::factory(),
+            'user_id' => 1, //$this->faker->randomDigitNotNull(),
             'slug' => $slug,
             'title' => $title,
             'body' => $this->faker->paragraphs(2, true),
