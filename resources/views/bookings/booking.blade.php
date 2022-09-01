@@ -1,14 +1,17 @@
 <x-layout>
     <x-slot name="content">
         <div id="calendar_container" class="calendar__container">
+            {{-- Change Calendar Booking Month --}}
             @php
-            // dd($event_bookings);
                 $next_month = date("M-Y", strtotime($selected_date . ' first day of next month'));
                 $prev_month = date("M-Y", strtotime($selected_date . ' first day of last month'));
                 $selected_date = strtotime(str_replace("-"," ",$selected_date));
                 $days = date("t", $selected_date);
+
+                if($selected_date == strtotime(date("M-Y"))) $today = date("j");
+                elseif($selected_date < strtotime(date("M-Y"))) $today = 32;
+                else $today = 0;
             @endphp
-            
             <div class="booking__planner booking__header">
                 <h2 style="margin:0;">{{ $event->title }}</h2>
                 <div class="booking__planner">
@@ -20,13 +23,68 @@
                         <svg class="feather" style="stroke: black;"><use href="/icons/feather-sprite.svg#chevron-right"/></svg>
                     </a>
                 </div>
-                
             </div>
-            <div class="booking__planner booking__planner__widgets">
-                <div class="calendar calendar__event">
-                    <x-calendar :selected_date="$selected_date" :event="$event"></x-calendar>
-                </div>
 
+            <div class="booking__planner booking__planner__widgets">
+                {{-- Event Calendar --}}
+                @php
+                    // Assign opening/closing times to the according date as the key.
+                    $day_labels = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
+                    $month_start = date("01-M-Y",$selected_date);
+                    $day_start =  intval(date("N", strtotime($month_start))); // 1 (for Monday) through 7 (for Sunday)
+                    $calendar_rows = ceil(($days + ($day_start - 1)) / 7);
+                    foreach($event->event_opening_times as $opening_time){
+                        $day_key = array_search($opening_time->day, $day_labels);
+                        for ($i=0; $i < $calendar_rows; $i++) {
+                            $key = ($day_key + ($i * 7)) - ($day_start - 1);
+                            $event_times[$key]['open_time'] = $opening_time->opening_time;
+                            $event_times[$key]['close_time'] = $opening_time->closing_time;
+                        }
+                    }
+                @endphp
+                <x-calendar :selected_date="$selected_date" :event_times="$event_times" class="calendar--monthly"></x-calendar>
+
+                {{-- Users Planner --}}
+                @php
+                foreach($event_bookings as $event_booking){
+                    $day = date('j', strtotime($event_booking["date"]));
+                    $bookings[$day - 1][] = $event_booking;
+                }
+                @endphp
+                <div id="user_schedule" class="user__schedule">
+                    <h3 class="user__schedule__header">My Planner</h3>
+                    <x-calendar :selected_date="$selected_date" :days="$days" :bookings="$bookings" list="1" class="calendar--daily"></x-calendar>
+                    {{-- <div>
+                        @if (isset($event_bookings))
+                            @php
+                                foreach($event_bookings as $event_booking){
+                                    $day = date('j', strtotime($event_booking["date"]));
+                                    $bookings[$day] = $event_booking;
+                                }
+                            @endphp
+                            @for ($i = 1; $i <= $days; $i++)
+                                    <div id="user_schedule_day{{ $i }}" class="schedule__data">
+                                        <div class="calendar__date {{ $today == $i ? 'calendar__date--today' : '' }}">
+                                            {{ date("D jS F", strtotime(date("Y-m-$i",$selected_date))) }}</div>
+                                        <ul class="schedule__data" id="schedule_day_items{{ $i }}">
+                                            @if (isset($bookings[$i]))
+                                                <li>{{ date("g:ia: ", strtotime($bookings[$i]->time)).$bookings[$i]->title }}</li>
+                                            @endif
+                                        </ul>
+                                    </div>
+                            @endfor
+                            @else
+                            @for ($i = 1; $i <= $days; $i++)
+                                <div id="user_schedule_day{{ $i }}" class="schedule__data">
+                                    <div class="schedule__date {{ $today == $i ? 'calendar__date--today' : '' }}">
+                                        {{ date("D jS F", strtotime(date("$i-M-Y",$selected_date))) }}</div>
+                                    <ul class="schedule__data" id="schedule_day_items{{ $i }}"></ul>
+                                    </div>
+                            @endfor
+                        @endif
+                    </div> --}}
+                </div>
+                
                 <!-- The Modal -->
                 <div id="my_modal" class="modal">
                     <div class="modal__content">
@@ -35,31 +93,6 @@
                     </div>
                 </div>
 
-                <div id="user_schedule" class="user__schedule">
-                    <h3 class="user__schedule__header">My Planner</h3>
-                    <table class="user__schedule__table">
-                        @if ($event->event_bookings)
-                        @for ($i = 1; $i <= $days; $i++)
-                            <tr>
-                                <td id="user_schedule_day{{ $i }}" class="schedule__data">
-                                    <div class="schedule__date">{{ date("D jS F", strtotime(date("$i-M-Y",$selected_date))) }}</div>
-                                    <ul class="schedule__data" id="schedule_day_items{{ $i }}">
-                                    </ul>
-                                </td>
-                            </tr>
-                        @endfor
-                        @else
-                        @for ($i = 1; $i <= $days; $i++)
-                        <tr>
-                            <td id="user_schedule_day{{ $i }}" class="schedule__data">
-                                <div class="schedule__date">{{ date("D jS F", strtotime(date("$i-M-Y",$selected_date))) }}</div>
-                                <ul class="schedule__data" id="schedule_day_items{{ $i }}"></ul>
-                            </td>
-                        </tr>
-                        @endfor
-                        @endif
-                    </table>
-                </div>
             </div>
         </div>
 
@@ -67,12 +100,12 @@
 </x-layout>
 
 <script>
-    function checkAvailability(day, date, open, close){
-        console.log("checkAvailability fn called.");
-        // Scroll to Planner Day.
-        let userSchedule = document.getElementById("user_schedule");
-        let scheduleScrollTo = document.getElementById("user_schedule_day" + day).offsetTop - document.getElementById("user_schedule_day1").offsetTop;
-        userSchedule.scrollTop = scheduleScrollTo - 75;
+
+    function checkAvailability(day, open, close){
+        // scheduleEffectIn(day);
+        let date = new Date();
+        date.setDate(day);
+        date = date.toISOString().split('T')[0];
 
         // Calculate Open Hours.
         let start = open.split(":");
@@ -113,10 +146,15 @@
         daySlotsForm.appendChild(selectOptions);
         selectOptions.style.display = "grid";
 
+        let j = 0;
         // Form Input-Select Options.
         for(let i = 0; i < hours; i++){
             let option = document.createElement("option");
             let slotHours = startDate.getHours() + i;
+            if(slotHours >= 24){
+                slotHours = j;
+                j++;
+            }
             let timeSlot = addZero(slotHours) + ":" + addZero(startDate.getMinutes());
             let node = document.createTextNode(timeSlot);
             option.appendChild(node);
@@ -132,8 +170,9 @@
         }
 
         // Form Offset position
-        let dayOffsetTop = document.getElementById("day" + day).offsetTop;
-        let dayOffsetLeft = document.getElementById("day" + day).offsetLeft;
+        let dayBlock = document.getElementById("day" + day);
+        let dayOffsetTop = dayBlock.offsetTop;
+        let dayOffsetLeft = dayBlock.offsetLeft;
         let daySlots = document.getElementById("day_slots");
         daySlots.style.top = (dayOffsetTop + 30) + "px";
         daySlots.style.left = (dayOffsetLeft + 20) + "px";
@@ -147,24 +186,19 @@
         document.getElementById("my_modal").style.display = "block";
         let dateFormatted = new Date(date + " " + open);
         let scheduleEntry = formatAMPM(dateFormatted) + ': {{ $event->title }}';
-        let schedule = document.getElementById("user_schedule");
-        schedule.style.zIndex = '3';
-        schedule.style.height = '22em';
-        schedule.style.position = 'fixed';
-        schedule.style.alignSelf = 'auto';
-        schedule.style.marginTop = '5px';
+        document.getElementById("user_schedule").className = 'user__schedule--modal__on';
 
-        console.log(dateFormatted.toLocaleString());
         // Amend form input as DateTime
-        document.getElementById("day_slot_" + dateFormatted.getHours()).value = dateFormatted.toLocaleString();
+        document.getElementById("day_slot_" + dateFormatted.getHours()).value = date + " " + open;
 
         // Review Schedule with appended event.
-        const item = document.createElement("li");
-        const node = document.createTextNode(scheduleEntry);
-        item.appendChild(node);
-        item.id = 'schedule_{{ $event->id }}';
-        item.className = 'schedule__day__item';
-        document.getElementById("schedule_day_items" + dateFormatted.getDate()).appendChild(item);
+        const node = document.createElement("li");
+        const textnode = document.createTextNode(scheduleEntry);
+        node.appendChild(textnode);
+        node.id = 'schedule_{{ $event->id }}';
+        node.className = 'day__list__item';
+        console.log("day_list" + dateFormatted.getDate());
+        document.getElementById("day_list" + dateFormatted.getDate()).appendChild(node);
     }
 
     let modal = document.getElementById("my_modal");
@@ -173,11 +207,7 @@
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
-            let schedule = document.getElementById("user_schedule");
-            schedule.style.zIndex = '0';
-            schedule.style.height = '50%';
-            schedule.style.position = 'static';
-            schedule.style.alignSelf = 'center';
+            document.getElementById("user_schedule").className = 'user__schedule';
             document.getElementById("day_slots_form").remove();
             document.getElementById("schedule_{{ $event->id }}").remove();
         }

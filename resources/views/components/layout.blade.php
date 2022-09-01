@@ -1,13 +1,14 @@
 <!doctype html>
 <link rel="stylesheet" href="/css/styles.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <div class="navbar__container">
     <nav class="navbar">
         <a class="navbar__link {{ request()->is('events') ? 'navbar__link--active' : '' }}"
             href="/events">Explore</a>
         <a class="navbar__link {{ request()->is('plans') ? 'navbar__link--active' : '' }}"
-            href="/plans">Plans</a>
+            href="{{ auth()->user() ? '/bookings/'.auth()->user()->id.'/review' : '/login' }}">Plans</a>
     </nav>
 
     <div class="navbar__title">
@@ -16,7 +17,7 @@
 
     <nav class="navbar navbar--right">
         @auth
-        <a href="/plans">{{ auth()->user()->name }} Plans</a>
+        <a href="#">{{ auth()->user()->name }}</a>
             <a class="navbar__link" href="/logout">Logout</a>
         @else
             <a class="navbar__link {{ request()->is('login') ? 'navbar__link--active' : '' }}"
@@ -26,8 +27,8 @@
 </div>
 
 @if (session()->has('success'))
-<div>
-    <p>{{ session('success') }}</p>
+<div class="message__container">
+    <p class="message__text">{{ session('success') }}</p>
 </div>
 @endif
 

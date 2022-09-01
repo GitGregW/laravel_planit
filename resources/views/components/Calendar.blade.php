@@ -1,59 +1,156 @@
-@props(['selected_date','event'])
+@props(['selected_date','event_times' => '0','bookings' => '0', 'list' => '0'])
 
 @php
-// dd($event['event_opening_times'][1]['day']);
 $day_labels = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
-$days =  date("t", $selected_date);
+$days =  date("t", $selected_date); // total number of days for the month
 $month_start = date("01-M-Y",$selected_date);
 $day_start =  intval(date("N", strtotime($month_start))); // 1 (for Monday) through 7 (for Sunday)
-$day_i = 1;
+$day = 1;
 $calendar_rows = ceil(($days + ($day_start - 1)) / 7);
 $blank_ends = ($calendar_rows * 7) - ($days + $day_start);
 
-foreach($event->event_opening_times as $opening_time){
-    ## Make days_open as "[0] => 'Friday'" ## REVIEW changing to id only.
-    $day_key = array_search($opening_time->day, $day_labels);
-    for ($i=0; $i < $calendar_rows; $i++) {
-        $keys[] = ($day_key + ($i * 7)) - ($day_start - 1);
-        $opening_days[] = $opening_time->id;
-        $open_time[] = $opening_time->opening_time;
-        $close_time[] = $opening_time->closing_time;
-    }
-    $days_open = array_combine($keys, $opening_days);
-    $times_open = array_combine($keys, $open_time);
-    $times_close = array_combine($keys, $close_time);
-}
+// Where today is true; readonly/grey-out the day. today is today; highlight & today is false; make day editible.
+if($selected_date == strtotime(date("M-Y"))) $today = date("j");
+elseif($selected_date < strtotime(date("M-Y"))) $today = 32;
+else $today = 0;
 
 @endphp
 
-@foreach ($day_labels as $day_label)
-    <div class="calendar__label">{{ $day_label }}</div>
-@endforeach
+<div id="calendar" {{ $attributes }}>
+    {{-- Calendar labels: Monday, Tuesday, Wednesday ... --}}
+    @foreach ($day_labels as $day_label)
+        <div class="calendar__label {{ $list ? '--hidden' : ''}}">{{ $day_label }}</div>
+    @endforeach
+    
+    {{-- Calendar blanks start --}}
+    @for ($i = 1; $i < $day_start; $i++)
+        <x-calendar.day :day=false class="day--blank {{ $list ? '--hidden' : ''}}" />
+    @endfor
+    
+    @for ($i = 0; $i < $days; $i++)
 
-@for ($i = 1; $i < $day_start; $i++)
-    <x-calendar.day :day_i=false :date=false class="day--blank" />
-@endfor
+    @endfor
 
-@for ($i = 0; $i < $days; $i++)
-    @if (array_key_exists($i, $days_open))
-    <x-calendar.day :day_i="$day_i" :date="date('Y-m-').$day_i" :open="$times_open[$i]" :close="$times_close[$i]" class="calendar__day--active" />
-    {{-- :date="$days_open[$i]" --}}
+    {{-- Event Schedule Calendar days --}}
+    @if ($event_times)
+        @for ($i = 0; $i < $days; $i++)
+            @if (!$today && isset($event_times[$i]))
+                <x-calendar.day :day="$day" :date="date('Y-m-').$day" :event_times="$event_times[$i]"
+                    class="calendar__day calendar__day--grid calendar__day--active" />
+            @elseif ($today == $i + 1)
+                @if (isset($event_times[$i]))
+                {{-- Where date is today; allow bookable slots +1 hour from now until close. --}}
+                    @php
+                    $last_time_slot = date('H:00:00', strtotime('2 hour'));
+                    if($last_time_slot < $event_times[$i]["close_time"] && $last_time_slot > $event_times[$i]["open_time"]) $event_times[$i]["open_time"] = $last_time_slot;
+                    @endphp
+                    <x-calendar.day :day="$day" :event_times="$event_times[$i]"
+                        today="1" class="calendar__day calendar__day--grid calendar__day--active" />
+                @else
+                    <x-calendar.day :day="$day"
+                        today="1" class="calendar__day calendar__day--grid calendar__day--active day--blank" />
+                @endif
+                @php($today = 0)
+            @else
+                <x-calendar.day :day="$day" class="calendar__day calendar__day--grid day--blank" />
+            @endif
+            @php($day++)
+        @endfor
     @else
-    <x-calendar.day :day_i="$day_i" :date=false class="day--blank" />
+    {{-- User Schedule Calendar days --}}
+        @for ($i = 0; $i < $days; $i++)
+            @php($day_label = date("D jS F", strtotime(date("$day-M-Y",$selected_date))))
+            @if (isset($bookings[$i]))
+                <x-calendar.day :day="$day" :day_label="$day_label" :bookings="$bookings[$i]" list="1"
+                    class="calendar__day calendar__day--active {{ $list ? 'calendar__day--list' : 'calendar__day--grid'}}" />
+            @else
+                <x-calendar.day :day="$day" :day_label="$day_label" list="1"
+                    class="calendar__day calendar__day--active {{ $list ? 'calendar__day--list' : 'calendar__day--grid'}}" />
+            @endif
+            @php($day++)
+        @endfor
     @endif
-    @php($day_i++)
-@endfor
+    
+    {{-- Calendar blanks end --}}
+    @for ($i = 0; $i <= $blank_ends; $i++)
+        <x-calendar.day :day=false class="day--blank {{ $list ? '--hidden' : ''}}" />
+    @endfor
+</div>
 
-@for ($i = 0; $i <= $blank_ends; $i++)
-    <x-calendar.day :day_i=false :date=false class="day--blank" />
-@endfor
+<!-- The Modal : For Bookings -->
+<div id="booking_edit_modal" class="modal">
+    <div id="modal_content" class="modal__content">
+        <span class="close">&times;</span>
+        <p id="booking_edit_modal_text"></p>
+    </div>
+</div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function scheduleEffectIn(day){
+        // Scroll to User Schedule Day. Add border styling.
+        let userList = document.getElementById("user_schedule");
+        let listBlock = document.getElementById("schedule_day" + day);
+        let listScrollTo = listBlock.offsetTop - document.getElementById("schedule_day1").offsetTop;
+        userList.scrollTop = listScrollTo - 75;
+        listBlock.style.border = 'solid yellow';
+        listBlock.style.borderRadius = '2px';
+    }
+    function scheduleEffectOut(day){
+        // Remove inline styling.
+        document.getElementById("schedule_day" + day).style = "none";
+    }
 
-{{-- <div class="calendar__day">
-<div class="calendar__date">1</div>
-<ul class="calendar__events">
-    <!-- logic if event >1 day then alter css to fill -->
-    <li class="calendar__events2">Music Festival</li>
-    <li class="calendar__events">Classic Car Show</li>
-</ul>
-</div> --}}
+    
+    function modifyBooking(id,title,date){
+        // 1. 'Would you like to cancel booking' Modal
+        document.getElementById("booking_edit_modal").style.display = "block";
+        let editModalText = document.getElementById("booking_edit_modal_text");
+        editModalText.innerHTML = "Would you like to cancel : " + title + "? (" + date + ")";
+
+        const content =  document.getElementById("modal_content");
+        const node = document.createElement("button");
+        const textnode = document.createTextNode("Cancel Booking");
+        node.id = "cancel_button";
+        node.onclick = function() {cancelBooking(id)};
+        node.appendChild(textnode);
+        content.appendChild(node);
+        
+        // document.getElementById("cancel_button").onclick = function(){
+        //     cancelBooking(id)
+        // }
+    }
+
+    let editModal = document.getElementById("booking_edit_modal");
+    editModal.style.display = "none";
+
+    window.onclick = function(event) {
+        if (event.target == editModal) {
+            editModal.style.display = "none";
+            document.getElementById("cancel_button").remove();
+        }
+    }
+
+    function cancelBooking(booking_id){
+        // 2. action a AJAX post request with JS remove child.
+        let token = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            type: 'DELETE',
+            cache: false,
+            url: '/bookings/' + booking_id,
+            data: { "id": booking_id, "_token": token },
+            success:function(data){
+                // console.log("AJAX success" + data["msg"]);
+                document.getElementById("booking_edit_modal").style.display = "none";
+                document.getElementById("day_list_item" + booking_id).remove();
+            }
+        });
+    }
+    // [M]ust remove the submit button and replace with a 'loading...'
+    // $(document).on({
+    //     ajaxStart: function(){
+    //         $body.addClass("loading"); },
+    //     ajaxStop: function(){
+    //         $body.removeClass("loading"); }    
+    // });
+</script>

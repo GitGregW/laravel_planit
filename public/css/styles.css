@@ -1,6 +1,18 @@
+@font-face {
+  font-family: "Bungee";
+  font-style: normal;
+  font-weight: 300;
+  src: url(/fonts/Bungee-Regular.ttf?3d95fa68283102c29cd938f1f5cbc0d0);
+}
 @media (max-width: 800px) {
-  h2.navbar__slogan {
-    font-size: 1.5em;
+  div.navbar__container {
+    padding: 0.25em 1em;
+    background-color: #876984;
+  }
+
+  nav.navbar {
+    margin: 0;
+    gap: 1.25em;
   }
 }
 div.navbar__container {
@@ -92,12 +104,12 @@ a:hover.footer__link {
   color: #FF005C;
 }
 
-@media (min-width: 992px) {
+@media (max-width: 800px) {
   div.card-business-container {
     flex-direction: column;
   }
 }
-div.card-container {
+div.card__container {
   /*
   justify-content: space-around;
   gap: 15px;
@@ -292,31 +304,34 @@ div:hover.card{
   border-radius: 4px;
 }
 
-.event__header {
-  display: flex;
-  padding: 1% 8%;
+.event__container {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  padding: 0 8em;
+  gap: 1em;
 }
 
-.event__header__content {
-  width: 70%;
+.event__content {
+  padding: 1em;
 }
 
-.event__header__title {
+.event__content__title {
   display: inline;
 }
 
-.event__header__rating {
+.event__content__title--item {
   display: inline;
-  padding-left: 2em;
+  margin-left: 2em;
 }
 
-.event__header__body {
+.event__content__categories {
+  padding: 0.5em;
+  margin: 0.5em 0;
+}
+
+.event__content__body {
   text-align: justify;
   padding: 0.5em 1.5em;
-}
-
-.event__header__contact {
-  width: 30%;
 }
 
 .event__map {
@@ -338,11 +353,12 @@ svg:hover.icon--star {
 }
 
 @media (max-width: 800px) {
-  div.calendar {
-    border: 0;
-    width: 100%;
-    padding: 0;
-    margin: 1%;
+  div.booking__planner {
+    flex-direction: column;
+  }
+
+  div.user__schedule {
+    align-self: auto;
   }
 }
 div.calendar__container {
@@ -369,10 +385,17 @@ div:nth-child(7).calendar__label {
 div.calendar__date {
   position: absolute;
   top: 0;
-  right: 0.5em;
+  right: 0.1em;
   margin-top: 0.1em;
+  padding: 0.25em;
   text-align: center;
   min-width: 1.5em;
+}
+
+div.calendar__date--today {
+  background-color: lightblue;
+  border-radius: 1em;
+  font-weight: bold;
 }
 
 div.calendar {
@@ -382,18 +405,46 @@ div.calendar {
   padding: 1rem;
 }
 
-div.calendar__event {
-  width: 50%;
+div.calendar--monthly {
+  display: grid;
+  grid-template-columns: 14.25% 14.25% 14.25% 14.25% 14.25% 14.25% 14.25%;
+  padding: 1rem;
+}
+
+div.calendar--daily {
+  display: grid;
+  grid-template-columns: 100%;
+  width: 85%;
+  padding: 1rem;
+}
+
+div.calendar--daily > div {
+  min-height: 2em;
+}
+
+div.--hidden {
+  display: none;
+}
+
+div.content--hidden {
+  display: none;
 }
 
 div.calendar__day {
   position: relative;
-  width: 100%;
-  min-height: 6em;
-  height: auto;
   border: 1px solid rgb(224, 224, 224);
   border-bottom: 1px solid grey;
-  padding: 1.5em 0.5em;
+  padding: 1.75em 0.5em;
+}
+
+div.calendar__day--list {
+  min-width: 22em;
+  min-height: 2em;
+}
+
+div.calendar__day--grid {
+  min-width: 6em;
+  min-height: 6em;
   padding-bottom: 0;
 }
 
@@ -402,29 +453,50 @@ div.calendar__day {
 }
 
 .calendar__day--active:hover {
-  cursor: pointer;
-  border: #81BBFF solid 1px;
-  border-radius: 2px;
+  background-color: lightgoldenrodyellow;
 }
 
-ul.calendar__day__list {
+.cursor--pointer:hover {
+  cursor: pointer;
+}
+
+ul.day__list {
+  margin: 0;
   padding: 0;
 }
 
-li.calendar__day__item {
+li.day__list__item {
   display: block;
   margin: 0.1em 0;
   border: solid 1px;
   border-radius: 3px;
   padding: 0.2em;
+  background-color: white;
+}
+
+.day__list__item:hover {
+  cursor: pointer;
+  border: #FF005C solid 1px;
+  border-radius: 2px;
 }
 
 div.user__schedule {
   max-width: 50%;
   overflow: scroll;
-  height: 50%;
+  height: 24em;
   align-self: center;
   background-color: white;
+}
+
+div.user__schedule--modal__on {
+  position: fixed;
+  max-width: 50%;
+  overflow: scroll;
+  height: 22em;
+  align-self: auto;
+  margin-top: 5px;
+  background-color: white;
+  z-index: 3;
 }
 
 h3.user__schedule__header {
@@ -436,27 +508,11 @@ h3.user__schedule__header {
   z-index: 1;
 }
 
-div.schedule__date {
-  position: absolute;
-  top: 0;
-  right: 0.5em;
-  margin-top: 0.1em;
-  text-align: center;
-  min-width: 1.5em;
-}
-
-td.schedule__data {
-  position: relative;
-  min-width: 22em;
-  height: 2em;
-  border-bottom: black solid 1px;
-}
-
-ul.schedule__data {
+ul.day_items {
   padding: 0;
 }
 
-ul.schedule__data > li {
+li.day_item {
   display: block;
   margin: 0.1em 0;
   padding: 0.2em;
@@ -472,10 +528,6 @@ div.booking__planner {
 div.booking__header {
   justify-content: space-around;
   margin-top: 1em;
-}
-
-div.booking__planner__widgets {
-  height: 44em;
 }
 
 div.modal {
@@ -510,6 +562,7 @@ select.calendar__day__slots {
   background-color: white;
   border: solid 1px lightblue;
   border-radius: 0.2em;
+  size: 6;
 }
 
 option.calendar__day__slot {
@@ -522,20 +575,45 @@ option.calendar__day__slot:hover {
   background-color: lightcyan;
 }
 
-@media (min-width: 992px) {
-  .event__create__background {
-    height: 100%;
+@media (max-width: 1200px) {
+  form.event__form {
+    padding: 0 10%;
+  }
+}
+@media (max-width: 1000px) {
+  form.event__form {
+    padding: 0 5%;
   }
 
-  .event__title {
-    position: static;
+  fieldset.form__fieldset {
+    min-width: auto;
+    width: auto;
+    margin: 0 0.5em;
+  }
+
+  table.schedule__table {
+    margin: auto;
+  }
+}
+@media (max-width: 1000px) and (max-width: 700px) {
+  fieldset.form__fieldset {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+
+  th.schedule__table__header {
+    padding: 0;
+    width: auto;
+  }
+
+  tr.schedule__row > td {
+    padding: 0;
   }
 }
 .event__create__background {
   position: absolute;
-  height: -webkit-fit-content;
-  height: -moz-fit-content;
-  height: fit-content;
+  height: 15em;
   width: 100%;
 }
 
@@ -550,50 +628,103 @@ option.calendar__day__slot:hover {
 
 .event__create__background::after {
   content: "";
-  height: -webkit-fit-content;
-  height: -moz-fit-content;
-  height: fit-content;
+  height: 15em;
   width: inherit;
-  background: rgba(110, 110, 110, 0.33);
+  background: rgba(110, 110, 110, 0.45);
   top: 0;
   left: 0;
   position: absolute;
 }
 
 .event__title {
-  margin: 1em 5% 1.5em;
-  height: 4em;
+  position: absolute;
+  margin: 0 4em;
 }
 
 .event__title > h2 {
   color: white;
 }
 
-.event__form {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  margin: 0 10%;
-}
-
-.event__form > fieldset > :first-child {
-  margin: -2em 1em;
-}
-
 .event__form__header {
-  display: flex;
-  flex-direction: column;
-  width: 35%;
-  padding: 0 3%;
-  margin: 0 5%;
-  gap: 1em;
+  height: 15em;
+  margin: 0 auto;
+  padding-top: 6em;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 .event__form__header > input {
+  display: block;
   font-size: 1.5em;
   text-align: center;
-  margin: 0 5%;
+  margin: 0 auto;
   border-radius: 0.25em;
+}
+
+.event__form__header > textarea {
+  padding: 0.5em 1em;
+  border-radius: 0.25em;
+  margin-top: 1em;
+  width: 24em;
+}
+
+.event__form {
+  position: relative;
+  text-align: center;
+}
+
+form.event__form > fieldset > :first-child {
+  margin: -2em 1em;
+}
+
+.form__fieldset {
+  background-color: white;
+  border: none;
+  border-radius: 14px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  min-width: 30em;
+  max-width: 45em;
+  margin: auto;
+}
+
+.form__fieldset--large {
+  position: relative;
+  text-align: center;
+}
+
+.form__fieldset--tags {
+  display: flex;
+}
+
+.form__fieldset > input {
+  display: block;
+  width: 11em;
+  margin: 0.5em 2em;
+}
+
+.form__fieldset > legend {
+  margin: auto;
+  padding-bottom: 1.5em;
+  color: black;
+}
+
+.category__column {
+  display: inline;
+  width: 100%;
+}
+
+.category__add__wrap {
+  margin-top: 1em;
+}
+
+.category__add__button {
+  font-size: 18px;
 }
 
 .event__form__categories {
@@ -616,12 +747,7 @@ option.calendar__day__slot:hover {
   padding: 0.25em 0.75em;
 }
 
-.event__fieldset__images {
-  margin: 1em 5%;
-}
-
 .event__image__container {
-  position: relative;
   padding: 1em 1.5em;
 }
 
@@ -674,7 +800,7 @@ option.calendar__day__slot:hover {
 
 .event__image__ribbon {
   display: flex;
-  width: 50rem;
+  width: inherit;
   gap: 0.25em;
   margin: 0 2em;
   overflow: auto;
@@ -693,12 +819,96 @@ option.calendar__day__slot:hover {
   display: block;
 }
 
-@font-face {
-  font-family: "Bungee";
-  font-style: normal;
-  font-weight: 300;
-  src: url(/fonts/Bungee-Regular.ttf?3d95fa68283102c29cd938f1f5cbc0d0);
+.schedule__info {
+  padding: 0 1em;
+  min-width: 3em;
+  font-size: 12px;
 }
+
+.schedule__info--extra {
+  min-width: 6em;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 0.5em 1em;
+  padding-left: 2em;
+  border-bottom: solid 4px white;
+}
+
+.schedule__table {
+  border-collapse: collapse;
+  margin: auto 4em;
+}
+
+.schedule__table__header {
+  text-align: left;
+  padding-left: 1em;
+  padding-right: 3em;
+  width: 9em;
+}
+
+.schedule__row {
+  background-color: white;
+}
+
+.schedule__row > td {
+  padding: 0.5em 1em;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2196F3;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+span.switch__text {
+  font-size: 0.8em;
+  line-height: 60px;
+}
+
 * {
   box-sizing: border-box;
   font-family: "calibri light";
@@ -734,29 +944,19 @@ svg.icon {
   fill: none;
 }
 
-.form__fieldset {
+.message__container {
+  position: fixed;
+  border: 0.2em solid blueviolet;
+  border-radius: 4px;
   background-color: white;
-  border: none;
-  border-radius: 24px;
-  width: 35%;
-  min-width: -webkit-fit-content;
-  min-width: -moz-fit-content;
-  min-width: fit-content;
-  margin: 0.5em 5%;
-  padding: 0.5em 1em;
-  display: block;
+  padding: 0 1.25em;
+  right: 4em;
+  margin-top: 1em;
+  z-index: 4;
 }
 
-.form__fieldset > input {
-  display: block;
-  width: 11em;
-  margin: 0.5em 2em;
-}
-
-.form__fieldset > legend {
-  margin: auto;
-  padding-bottom: 1.5em;
-  color: white;
+.message__text {
+  margin: 0.25em 0;
 }
 
 form > button {

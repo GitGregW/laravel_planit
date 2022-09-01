@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->dateTime('date');
+            $table->date('date');
+            $table->time('time');
             $table->decimal('price', 5, 2)->nullable();
             $table->decimal('discount', 3, 2)->nullable();
             $table->timestamps();

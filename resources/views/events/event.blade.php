@@ -15,26 +15,24 @@
             @endforeach
         </div>
 
-        <div class="event__header">
-            <div>
-                <button style="display: block"><a href="/bookings/{{ $event->slug }}">Plan Now</a></button>
-            </div>
-            <div class="event__header__content">
-                
-                <h2 class="event__header__title">{{ $event->title }}</h2>
-                    <span class="event__header__rating">
+        <div class="event__container">
+            <div class="event__content">
+                <div>
+                    <h2 class="event__content__title">{{ $event->title }}</h2>
+                    <span class="event__content__title--item">
                         <svg class="icon icon--star"
                                 style="vertical-align: baseline"><use href="/icons/feather-sprite.svg#star"/></svg>
-                        {{$event->rating}}</span>
-                    <div>
+                    {{$event->rating}}</span>
+                    <button class="event__content__title--item"><a href="/bookings/{{ $event->slug }}">Plan Now</a></button>
+                    <div class="event__content__categories">
                         @foreach ($event->categories as $category)
                             <span class="event__category__pill">{{$category->name}}</span>
                         @endforeach
                     </div>
-                
-                <p class="event__header__body">{{$event->body}}</p>
+                </div>
+                <p class="event__content__body">{{$event->body}}</p>
             </div>
-            <div class="event__header__contact">
+            <div class="event__content">
                 <div>
                     <h4>Opening Times</h4>
                     @php( $schedules = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday','Bank Holidays') )

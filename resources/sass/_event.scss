@@ -16,31 +16,33 @@
     border-radius: 4px;
 }
 
-.event__header{
-    display: flex;
-    padding: 1% 8%;
+.event__container{
+    display: grid;
+    grid-template-columns: 70% 30%;
+    padding: 0 8em;
+    gap: 1em;
 }
 
-.event__header__content{
-    width: 70%;
+.event__content{
+    padding: 1em
 }
 
-.event__header__title{
+.event__content__title{
     display: inline;
 }
 
-.event__header__rating{
+.event__content__title--item{
     display: inline;
-    padding-left: 2em;
+    margin-left: 2em;
 }
 
-.event__header__body{
+.event__content__categories{
+padding: 0.5em;
+    margin: 0.5em 0;
+}
+.event__content__body{
     text-align: justify;
     padding: 0.5em 1.5em;
-}
-
-.event__header__contact{
-    width: 30%
 }
 
 .event__map{

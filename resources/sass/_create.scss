@@ -1,24 +1,42 @@
-@media (min-width: 992px) {
-    .event__create__background{
-        height: 100%;
-      }
-    .event__title{
-        position: static;
+@media (max-width: 1200px){
+    form.event__form{
+        padding: 0 10%;
     }
 }
-
-// div.event__create__background{
-//     position: absolute;
-//     // height: 100%;
-//     height: 20em;
-//     width: 100%;
-//     // opacity: 0.5;
-// }
+@media (max-width: 1000px) {
+    form.event__form{
+        padding: 0 5%;
+    }
+    fieldset.form__fieldset{
+        min-width: auto;
+        width: auto;
+        margin: 0 0.5em;
+    }
+    table.schedule__table{
+        margin: auto;
+    }
+@media (max-width: 700px) {
+    fieldset.form__fieldset{
+        width: 100%;
+        margin: 0;
+        text-align: center;
+    }
+    th.schedule__table__header{
+        padding: 0;
+        width: auto;
+    }
+    tr.schedule__row > td{
+        padding: 0;
+    }
+}
+}
+// If @media < 650px to flex opening times table?
+// Also to review modal for event images at the above size.
 
 .event__create__background{
     position: absolute;
     // height: 100em;
-    height: fit-content;
+    height: 15em;
     width: 100%;
 }
 
@@ -31,51 +49,99 @@
 
 .event__create__background::after{
     content: "";
-    height: fit-content;
+    height: 15em;
     width: inherit;
-    background: rgb(110, 110, 110, 0.33);
+    background: rgba(110,110,110, 0.45);
     top: 0;
     left: 0;
     position: absolute;
 }
 
 .event__title{
-    // position: absolute;
-    //font-size: 24px;
-    margin: 1em 5% 1.5em;
-    height: 4em;
+    position: absolute;
+    margin: 0 4em;
 }
 
 .event__title > h2{
     color: white;
 }
 
-.event__form{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    margin: 0 10%;
+.event__form__header{
+    height: 15em;
+    margin: 0 auto;
+    padding-top: 6em;
+    width: fit-content;
+}
+.event__form__header > input{
+    display: block;
+    font-size: 1.5em;
+    text-align: center;
+    margin: 0 auto;
+    border-radius: 0.25em;
+}
+.event__form__header > textarea{
+    padding: 0.5em 1em;
+    border-radius: 0.25em;
+    margin-top: 1em;
+    width: 24em;
 }
 
-.event__form > fieldset > :first-child{
+.event__form{
+    position: relative;
+    text-align: center;
+}
+
+form.event__form > fieldset > :first-child{
     margin: -2em 1em;
 }
 
-.event__form__header{
+.form__fieldset{
+    background-color: white;
+    border: none;
+    border-radius: 14px;
+    width: fit-content;
+    height: fit-content;
+    min-width: 30em;
+    max-width: 45em;
+    margin: auto;
+  }
+  
+  .form__fieldset--large{
+    position: relative;
+    text-align: center;
+  }
+
+  .form__fieldset--tags{
     display: flex;
-    flex-direction: column;
-    // padding: 0 5%;
-    width: 35%;
-    padding: 0 3%;
-    margin: 0 5%;
-    gap: 1em;
+  }
+  
+  
+  .form__fieldset > input{
+    display: block;
+    width: 11em;
+    margin: 0.5em 2em;
+  }
+  
+  .form__fieldset > legend{
+    // background-color: white;
+    // border: black 1px solid;
+    // border-radius: 3px;
+    margin: auto;
+    padding-bottom: 1.5em;
+    color: black;
+  }
+
+.category__column{
+    display: inline;
+    width: 100%
 }
 
-.event__form__header > input{
-    font-size: 1.5em;
-    text-align: center;
-    margin: 0 5%;
-    border-radius: 0.25em;
+.category__add__wrap{
+    margin-top: 1em;
+}
+
+.category__add__button{
+    font-size: 18px;
 }
 
 .event__form__categories{
@@ -98,12 +164,7 @@
     padding: 0.25em 0.75em;
 }
 
-.event__fieldset__images{
-    margin: 1em 5%;
-}
-
 .event__image__container{
-    position: relative;
     padding: 1em 1.5em;
 }
 
@@ -169,7 +230,7 @@
 
 .event__image__ribbon{
     display: flex;
-    width: 50rem;
+    width: inherit;
     gap: 0.25em;
     margin: 0 2em;
     overflow: auto;
@@ -191,4 +252,38 @@
 
 .event__form__submit{
     display: block;
+}
+
+.schedule__info{
+    padding: 0 1em;
+    min-width: 3em;
+    font-size: 12px;
+}
+
+.schedule__info--extra{
+    min-width: 6em;
+    height: fit-content;
+    padding: 0.5em 1em;
+    padding-left: 2em;
+    border-bottom: solid 4px white;
+}
+
+.schedule__table{
+    border-collapse: collapse;
+    margin: auto 4em;
+}
+
+.schedule__table__header{
+    text-align: left;
+    padding-left: 1em;
+    padding-right: 3em;
+    width: 9em;
+}
+
+.schedule__row{
+    background-color: white;
+}
+
+.schedule__row > td{
+    padding: 0.5em 1em;
 }

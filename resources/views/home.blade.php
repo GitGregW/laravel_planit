@@ -1,17 +1,18 @@
 <x-layout>
     <x-slot name="content">
         <div class="card-header">
-            <h2>Recently Added</h2>
+            <h2>Recently Added Events</h2>
             <p class="card__text-header">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Dolor magna eget est lorem ipsum dolor sit amet.
             </p>
+            <x-events.cards :events="$new_events" />
         </div>
 
         <!-- card component here -->
 
         <!-- card component replace above -->
         <div style="position: relative;border-bottom: 4px solid #FF005C;height:30px; width:60%; margin: 0 0 40px 20%">
-            <h2 class="card__title" style="position: absolute;top: 50%;left: 40%;"><a href="/explore">Explore More</a></h2>
+            <h2 class="card__title" style="position: absolute;top: 50%;left: 40%;"><a href="/events">Explore More</a></h2>
         </div>
 
         <!-- Are you a business? List It. START -->
@@ -47,10 +48,11 @@
         <!-- Are you a business? List It. END -->
 
         <div class="card-header">
-            <h2>Free Events</h2>
+            <h2>Explore Events for tomorrow</h2>
             <p class="card__text-header">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Dolor magna eget est lorem ipsum dolor sit amet.
             </p>
+            <x-events.cards :events="$tomorrow_events" />
         </div>
         <!-- card component here -->
 

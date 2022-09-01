@@ -1,11 +1,12 @@
+@use "fonts";
 @use "navbar";
 @use "footer";
+@use "home";
 @use "cards";
 @use "event";
 @use "calendar";
 @use "create";
-@use "fonts";
-
+@use "switch";
 
 $font-stack: Helvetica, sans-serif;
 $primary-color: #000000;
@@ -50,32 +51,18 @@ svg.icon{
   fill: none;
 }
 
-.form__fieldset{
+.message__container{
+  position: fixed;
+  border: 0.2em solid blueviolet;
+  border-radius: 4px;
   background-color: white;
-  border: none;
-  border-radius: 24px;
-  width: 35%;
-  min-width: fit-content;
-  margin: 0.5em 5%;
-  // width: fit-content;
-  // margin: 0.5em 33%;
-  padding: 0.5em 1em;
-  display: block;
+  padding: 0 1.25em;
+  right: 4em;
+  margin-top: 1em;
+  z-index: 4;
 }
-
-.form__fieldset > input{
-  display: block;
-  width: 11em;
-  margin: 0.5em 2em;
-}
-
-.form__fieldset > legend{
-  // background-color: white;
-  // border: black 1px solid;
-  // border-radius: 3px;
-  margin: auto;
-  padding-bottom: 1.5em;
-  color: white;
+.message__text{
+  margin: 0.25em 0;
 }
 
 form > button{

@@ -26,6 +26,7 @@ class EventBookingFactory extends Factory
             'event_id' => $this->faker->numberBetween(($count_events - 8), $count_events),
             'user_id' => $this->faker->numberBetween(($count_users - 4), $count_users),
             'date' => $this->faker->dateTimeBetween('-6 week', '+6 week'),
+            'time' => $this->faker->time('H:00:00'),
             'price' => $this->faker->randomFloat(2, 0, 30),
             'discount' => $this->faker->randomFloat(2, 0, 1)
         ];

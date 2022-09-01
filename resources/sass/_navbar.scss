@@ -1,9 +1,13 @@
-$background-color: #768769;
 $active-color: #FF005C;
 
 @media (max-width: 800px) {
-  h2.navbar__slogan{
-    font-size: 1.5em;
+  div.navbar__container{
+    padding: 0.25em 1em;
+    background-color: #876984;
+  }
+  nav.navbar{
+    margin: 0;
+    gap: 1.25em;
   }
 }
 

@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
                 ])
             ->create();
 
-        $users = User::factory()->count(4)->create();
+        $users = User::factory()->count(5)->create();
 
         // $day_labels = collect(['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']);
         // Every Event consits of 5 opening day times
@@ -50,8 +50,8 @@ class DatabaseSeeder extends Seeder
                     ->create();
             });
 
-        // Hardcoded seed factory in EventBooking for: User Count 4 & Event Count 9
-        $event_bookings = EventBooking::factory()->count(12)->create();
+        // Hardcoded seed factory in EventBooking for: User Count 5 & Event Count 9
+        $event_bookings = EventBooking::factory()->count(20)->create();
             // ->count(4)
             // ->for($event)
             // ->create();

@@ -8,6 +8,18 @@ use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
+    public function home(){
+        $tomorrow = date("l");
+        return view('home', [
+            'new_events' => Event::latest()->take(3)->get(),
+            'tomorrow_events' => Event::join('event_opening_times', 'events.id', '=', 'event_opening_times.event_id')
+                ->where('day', $tomorrow)
+                ->select('events.*')
+                ->take(6)
+                ->get()
+        ]);
+    }
+
     public function index() {
         return view('events/events', [
             'events' => Event::all()
@@ -61,7 +73,7 @@ class EventController extends Controller
         DB::table('event_categories')->insert($event_categories);
 
         ## Only require Opening Times records where given time inputs are present.
-        $event_opening_times = request()->input('event_opening_times');
+        $event_opening_times = request()->input('opening_times');
         $event_opening_times_store = [];
         //dd($event_opening_times);
         foreach($event_opening_times as $key => $event_opening_time){

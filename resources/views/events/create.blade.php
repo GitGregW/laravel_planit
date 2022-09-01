@@ -9,135 +9,141 @@
             {{-- Create an error component here: bordered, aligned centered, list
                 *Also, include inline error styling i.e. red form element border --}}
         @endif
+        <div class="event__title"><h2>Add Your Event</h2></div>
         <form id="event_form" class="event__form" method="POST" action="/events/create">
-            <div class="event__title"><h2>Add Your Event</h2></div>
             @csrf
             <div class="event__form__header">
                 <input id="title"  type="text" name="title"
                     placeholder="Event Name" value="{{ old('title')}}">
-                <textarea id="body" name="body" style="padding: 0.5em 1em; border-radius: 0.25em;" placeholder="Event Description"
+                <textarea id="body" name="body" placeholder="Event Description"
                     value="{{ old('body')}}" rows='4'></textarea>
             </div>
+            
             {{-- [C] Check for free postcode lookup. --}}
-                <fieldset class="form__fieldset">
-                    <legend>Address</legend>
-                    <input class="event__form__address1" type="text"
-                    id="address_line_1" name="address_line_1"
-                    placeholder="Address Line 1" value="{{ old('address_line_1')}}">
-                    @error('address_line_1')
-                        <p>{{ $message }}</p>
-                    @enderror
-                    <input class="event__form__address2" type="text"
-                    id="address_line_2" name="address_line_2"
-                    placeholder="Address Line 2" value="{{ old('address_line_2')}}">
-                    <input class="event__form__city" type="text"
-                    id="address_city" name="address_city"
-                    placeholder="City" value="{{ old('address_city')}}">
-                    <input class="event__form__county" type="text"
-                    id="address_county" name="address_county"
-                    placeholder="County" value="{{ old('address_county')}}">
-                    <input class="event__form__postcode" type="text"
-                    id="postcode" name="postcode"
-                    placeholder="Postcode" value="{{ old('postcode')}}">
-                </fieldset>
-                <fieldset class="event__form__wrap--contact form__fieldset">
-                    <legend>Contact</legend>
-                    <input class="event__form__landline" type="text"
-                    id="contact_landline" name="contact_landline"
-                    placeholder="Landline Number" value="{{ old('contact_landline')}}">
-                    <input class="event__form__mobile" type="text"
-                    id="contact_mobile" name="contact_mobile"
-                    placeholder="Mobile Number" value="{{ old('contact_mobile')}}">
-                </fieldset>
-
-                <fieldset class="form__fieldset">
-                    <legend>Event Categories</legend>
-                    <select class="event__form__categories" id="event_categories" name="event_categories[]"
-                        onChange="categorySelections()" size="6" multiple>
-                        @foreach (\App\Models\Category::all() as $category)
-                            <option id="event_category" name="event_category" value={{$category->id}}
-                                {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
+            <fieldset class="form__fieldset">
+                <legend>Address + Contact</legend>
+                <input class="event__form__address1" type="text"
+                id="address_line_1" name="address_line_1"
+                placeholder="Address Line 1" value="{{ old('address_line_1')}}">
+                @error('address_line_1')
+                    <p>{{ $message }}</p>
+                @enderror
+                <input class="event__form__address2" type="text"
+                id="address_line_2" name="address_line_2"
+                placeholder="Address Line 2" value="{{ old('address_line_2')}}">
+                <input class="event__form__city" type="text"
+                id="address_city" name="address_city"
+                placeholder="City" value="{{ old('address_city')}}">
+                <input class="event__form__county" type="text"
+                id="address_county" name="address_county"
+                placeholder="County" value="{{ old('address_county')}}">
+                <input class="event__form__postcode" type="text"
+                id="postcode" name="postcode"
+                placeholder="Postcode" value="{{ old('postcode')}}">
+                <br />
+                <input class="event__form__landline" type="text"
+                id="contact_landline" name="contact_landline"
+                placeholder="Landline Number" value="{{ old('contact_landline')}}">
+                <input class="event__form__mobile" type="text"
+                id="contact_mobile" name="contact_mobile"
+                placeholder="Mobile Number" value="{{ old('contact_mobile')}}">
+            </fieldset>
+            <fieldset class="event__form__wrap--contact form__fieldset form__fieldset--large">
+                <legend>Opening Times</legend>
+                {{-- After any selected case to return rows for remaining cases to add --}}
+                {{-- After any custom date to return additional row to add another custom date --}}
+                    <p>Specify your opening times below. <i>(default closed)</i></p>
+                    <table class="schedule__table">
+                        @php
+                            $schedules = array('monday','tuesday','wednesday','thursday','friday','saturday','sunday','bank_holidays','1');
+                            $schedule_i = 0;
+                        @endphp
+                        @foreach ($schedules as $schedule)
+                            <x-calendar.schedule :schedule="$schedule" :i="$schedule_i" />
+                            @php ($schedule_i++)
                         @endforeach
-                    </select>
-                    <input class="event__form__category" type="text" style="display: inline"
-                        id="event_category_add" name="event_category_add" placeholder="Your Category"
-                    >
-                    <button class="event__form__button" id="category_button" name="category_button" onclick="addCategory()">Add Category</button>
+                    </table>
+                    <p><span><svg class="feather"><use href="/icons/feather-sprite.svg#plus-square"/></svg></span> Add Custom Opening Times</p>
+                    {{-- I've removed the function out of the component loop to avoid duplication.
+                        Only the event listeners are initialised in the component scripts. --}}
+                    <script>
+                        function openStatus(day){
+                            let openingTime = document.getElementById("opening_times[" + day + "][opening_time]");
+                            let closingTime = document.getElementById("opening_times[" + day + "][closing_time]");
+                            let duration = document.getElementById("open_duration" + day);
+                            let rowA = document.getElementById("row" + day + "a");
+                            let rowB = document.getElementById("row" + day + "b");
+                            if (openingTime.value && closingTime.value){
+                                rowA.style.backgroundColor = rowB.style.backgroundColor = "palegreen";
+                                start = openingTime.value.split(":");
+                                end = closingTime.value.split(":");
+                                var startDate = new Date(0, 0, 0, start[0], start[1], 0);
+                                if(end[0] < start[0]) var endDate = new Date(0, 0, 1, end[0], end[1], 0);
+                                else var endDate = new Date(0, 0, 0, end[0], end[1], 0);
+                                var diff = endDate.getTime() - startDate.getTime();
+                                var hours = Math.floor(diff / 1000 / 60 / 60);
+                                diff -= hours * 1000 * 60 * 60;
+                                var minutes = Math.floor(diff / 1000 / 60);
+                                if(hours) hours = hours + " hr" + (hours > 1 ? "s" : "");
+                                else hours = "";
+                                if(minutes) minutes = minutes + " min" + (minutes > 1 ? "s" : "");
+                                else minutes = "";
+                                if(hours && minutes) duration.innerHTML = "Open: " + hours + ", " + minutes;
+                                else duration.innerHTML = "Open: " + hours + minutes;
+                            }
+                            else{
+                                rowA.style.backgroundColor = rowB.style.backgroundColor = "white";
+                                duration.innerHTML = "";
+                            }
+                        }
+                        // ... function hoursOpen() // that provides human readable hours/minutes open
+                    </script>
+                    {{-- if custom '1' has a date then incrememnt --}}
                 </fieldset>
-                <fieldset class="form__fieldset event__fieldset__images"
-                        style="margin: 1em 5%; text-align: center;">
-                    <legend>Event Images</legend>
-                    
-                    <div id="category_selections" name="category_selections" class="event__category__selections"></div>
-                    
-                    {{-- Input to be hidden; Images searched based on categories --}}
-                    <input class="event__form__image__search" type="text" style="display: inline"
-                        id="contact_image" name="contact_image" placeholder="Select Categories" hidden>
+            
+                <fieldset class="form__fieldset form__fieldset--tags">
+                    <legend>Event Tags</legend>
+                    <div class="category__column">
+                        <p>Multiple Selection</p>
+                        <select class="event__form__categories" id="event_categories" name="event_categories[]"
+                            onChange="categorySelections()" size="6" multiple>
+                            @foreach (\App\Models\Category::all() as $category)
+                                <option id="event_category" name="event_category" value={{$category->id}}
+                                    {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="category__column">
+                        <p>Add categories</p>
+                        <span class="category__add__wrap">
+                            <input type="text" style="display: inline"
+                                id="event_category_add" name="event_category_add" placeholder="Your Category">
+                            <button class="category__add__button" style="font-size:18px;" id="category_button" name="category_button" onclick="addCategory()">+</button>
+                        </span>
+                    </div>
+                </fieldset>
 
+                <fieldset class="form__fieldset event__fieldset__images form__fieldset--large">
+                    <legend>Event Images</legend>
+                
+                    <div id="category_selections" name="category_selections" class="event__category__selections"></div>
+                
+                    {{-- Input to be hidden; Images searched based on categories --}}
+                    <input id="contact_image" name="contact_image" type="text" style="display:none" hidden>
                     <div class="event__image__count">
                         <svg class="feather event__image__svg" onclick="decrementImage()" style="stroke: black; margin: 0 0.25em;"><use href="/icons/feather-sprite.svg#minus-square"/></svg>
                         <input id="image_count" class="event__form__image__count" type="text" style="width:2em;" value="2" />
                         <svg class="feather event__image__svg" onclick="incrementImage()" style="stroke: black; margin: 0 0.25em;"><use href="/icons/feather-sprite.svg#plus-square"/></svg>
                     </div>
-
                     <button class="event__form__button" id="image_button" name="image_button" onclick="getImages()">Search Image</button>
-        
-                    <input type="text" id="event_images" name="event_images" hidden>
-
+                    <input type="text" id="event_images" name="event_images" style="display:none" hidden>
                     {{-- View example image: option to add multiple images --}}
                     {{-- <input type="image" src="" alt="" id="contact_image_1" name="contact_image_1"> --}}
-                    
+                
                     <div class="event__image__container" id="image_view" name="image_view"></div>
                 
-                </fieldset>
-                
-                <fieldset class="event__form__wrap--contact form__fieldset">
-                    <legend>Opening Times</legend>
-                    {{-- After any selected case to return rows for remaining cases to add --}}
-                    {{-- After any custom date to return additional row to add another custom date --}}
-                        <p>Specify your opening times below. <i>(default closed)</i></p>
-                        <table>
-                            @php
-                                $schedules = array('monday','tuesday','wednesday','thursday','friday','saturday','sunday','bank_holidays','1');
-                                $schedule_i = 0;
-                            @endphp
-                            @foreach ($schedules as $schedule)
-                                <x-calendar.schedule :schedule="$schedule" :i="$schedule_i" />
-                                @php ($schedule_i++)
-                            @endforeach
-                        </table>
-                        <p><span><svg class="feather"><use href="/icons/feather-sprite.svg#plus-square"/></svg></span> Add Custom Opening Times</p>
-                        {{-- I've removed the function out of the component loop to avoid duplication.
-                            Only the event listeners are initialised in the component scripts. --}}
-                        <script>
-                            function openStatus(openingTime, closingTime, status, duration){
-                                if (openingTime.value && closingTime.value){
-                                    status.innerHTML = "Open";
-                                    status.style.color = "black";
-                                    start = openingTime.value.split(":");
-                                    end = closingTime.value.split(":");
-                                    var startDate = new Date(0, 0, 0, start[0], start[1], 0);
-                                    if(end[0] < start[0]) var endDate = new Date(0, 0, 1, end[0], end[1], 0);
-                                    else var endDate = new Date(0, 0, 0, end[0], end[1], 0);
-                                    var diff = endDate.getTime() - startDate.getTime();
-                                    var hours = Math.floor(diff / 1000 / 60 / 60);
-                                    diff -= hours * 1000 * 60 * 60;
-                                    var minutes = Math.floor(diff / 1000 / 60);
-                                    if(hours) duration.innerHTML = " for " + hours + " hour" + (hours > 1 ? "s" : "");
-                                    if(minutes) duration.innerHTML += ", and " + minutes + " minute" + (minutes > 1 ? "s" : "");
-                                }
-                                else{
-                                    status.innerHTML = "Closed";
-                                    status.style.color = "lightgrey";
-                                    duration.innerHTML = "";
-                                }
-                            }
-                            // ... function hoursOpen() // that provides human readable hours/minutes open
-                        </script>
-                        {{-- if custom '1' has a date then incrememnt --}}
-                    
                 </fieldset>
 
                 @foreach ($errors->all() as $error)
@@ -146,8 +152,6 @@
 
             <button class="event__form__submit" type="submit">Submit</button>
         </form>
-
-
     </x-slot>
 </x-layout>
 
