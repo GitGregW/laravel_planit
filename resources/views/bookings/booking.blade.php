@@ -46,9 +46,12 @@
 
                 {{-- Users Planner --}}
                 @php
-                foreach($event_bookings as $event_booking){
-                    $day = date('j', strtotime($event_booking["date"]));
-                    $bookings[$day - 1][] = $event_booking;
+                if(!isset($event_bookings[0])) $bookings = [];
+                else{
+                    foreach($event_bookings as $event_booking){
+                        $day = date('j', strtotime($event_booking["date"]));
+                        $bookings[$day - 1][] = $event_booking;
+                    }
                 }
                 @endphp
                 <div id="user_schedule" class="user__schedule">

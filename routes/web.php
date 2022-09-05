@@ -26,7 +26,7 @@ Route::get('/contact', function () {
 
 Route::get('login', [SessionController::class, 'create'])->middleware('guest');
 Route::post('login', [SessionController::class, 'store']);
-Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth');
+Route::get('logout', [SessionController::class, 'destroy'])->middleware('auth');
 
 Route::get('/', [EventController::class, 'home']);
 // Objective: RESTful Events Controller

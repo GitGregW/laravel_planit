@@ -50,11 +50,8 @@ class DatabaseSeeder extends Seeder
                     ->create();
             });
 
-        // Hardcoded seed factory in EventBooking for: User Count 5 & Event Count 9
-        $event_bookings = EventBooking::factory()->count(20)->create();
-            // ->count(4)
-            // ->for($event)
-            // ->create();
+        // EventBooking factory will seed based on current Users and Events
+        $event_bookings = EventBooking::factory()->count(35)->create();
 
         \App\Models\EventImage::create([
             'event_id' => '1',

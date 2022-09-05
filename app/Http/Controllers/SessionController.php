@@ -1,13 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\User;
+use App\Models\EventBooking;
 
 use Illuminate\Validation\ValidationException;
 
 class SessionController extends Controller
 {
     public function create(){
-        return view('login');
+        // Testing: Display the User login details which has the most bookings.
+        $user_bookings = EventBooking::select('user_id')->get();
+        return view('login', [
+            'user' => User::where('id', ($user_bookings->pluck('user_id'))->mode())->get()
+        ]);
     }
 
     public function store(){

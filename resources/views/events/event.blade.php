@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot name="content">
         <div class="images__container">
-            @foreach ($event->event_images as $image)
+            @foreach ($event[0]->event_images as $image)
                 @php
                 list($width, $height) = getimagesize('.'.$image->src);
                 $is_portrait = false;
@@ -18,19 +18,19 @@
         <div class="event__container">
             <div class="event__content">
                 <div>
-                    <h2 class="event__content__title">{{ $event->title }}</h2>
+                    <h2 class="event__content__title">{{ $event[0]->title }}</h2>
                     <span class="event__content__title--item">
                         <svg class="icon icon--star"
                                 style="vertical-align: baseline"><use href="/icons/feather-sprite.svg#star"/></svg>
-                    {{$event->rating}}</span>
-                    <button class="event__content__title--item"><a href="/bookings/{{ $event->slug }}">Plan Now</a></button>
+                    {{$event[0]->rating}}</span>
+                    <button class="event__content__title--item"><a href="/bookings/{{ $event[0]->slug }}">Plan Now</a></button>
                     <div class="event__content__categories">
-                        @foreach ($event->categories as $category)
+                        @foreach ($event[0]->categories as $category)
                             <span class="event__category__pill">{{$category->name}}</span>
                         @endforeach
                     </div>
                 </div>
-                <p class="event__content__body">{{$event->body}}</p>
+                <p class="event__content__body">{{$event[0]->body}}</p>
             </div>
             <div class="event__content">
                 <div>
@@ -42,7 +42,7 @@
                     <tr>
                         <td>{{$schedule}}</td>
                         @php ( $open = 0 )
-                        @foreach ($event->event_opening_times as $opening_time)
+                        @foreach ($event[0]->event_opening_times as $opening_time)
                             @if ($schedule == $opening_time->day)
                                 <td>{{ $opening_time->opening_time }} - {{ $opening_time->closing_time }}</td>
                                 @php ( $open = 1 )
@@ -58,16 +58,16 @@
                 <div>
                     <h4>Contact</h4>
                     <p>
-                        {{ $event->address_line_1 }} <br />
-                        {{ $event->address_line_2 }} <br />
-                        {{ $event->address_city }} <br />
-                        {{ $event->address_county }} <br />
-                        {{ $event->postcode }} <br />
+                        {{ $event[0]->address_line_1 }} <br />
+                        {{ $event[0]->address_line_2 }} <br />
+                        {{ $event[0]->address_city }} <br />
+                        {{ $event[0]->address_county }} <br />
+                        {{ $event[0]->postcode }} <br />
                     </p>
                     <hr />
                     <p>
-                        {{ $event->contact_landline }} <br />
-                        {{ $event->contact_mobile }}
+                        {{ $event[0]->contact_landline }} <br />
+                        {{ $event[0]->contact_mobile }}
                     </p>
                 </div>
 

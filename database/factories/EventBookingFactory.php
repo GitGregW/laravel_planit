@@ -18,14 +18,14 @@ class EventBookingFactory extends Factory
      */
     public function definition()
     {
-        // Whenever the DB is seeded then match the bookings with the seeded Event and User factory seeds.
+        // Assign a random User and Event to an Event Booking.
         $count_users = User::count();
         $count_events = Event::count();
 
         return [
-            'event_id' => $this->faker->numberBetween(($count_events - 8), $count_events),
-            'user_id' => $this->faker->numberBetween(($count_users - 4), $count_users),
-            'date' => $this->faker->dateTimeBetween('-6 week', '+6 week'),
+            'event_id' => $this->faker->numberBetween(1, $count_events),
+            'user_id' => $this->faker->numberBetween(1, $count_users),
+            'date' => $this->faker->dateTimeBetween('-6 week', '+12 week'),
             'time' => $this->faker->time('H:00:00'),
             'price' => $this->faker->randomFloat(2, 0, 30),
             'discount' => $this->faker->randomFloat(2, 0, 1)

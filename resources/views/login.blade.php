@@ -10,6 +10,15 @@
                 width: 100%;
                 overflow: auto;
             }
+            div.login__information{
+                position: absolute;
+                top: 4rem;
+                left: 4rem;
+                align-content: center;
+                padding: 1rem;
+                border-radius: 0.25rem;
+                background-color: linen;
+            }
             div.form__container{
                 align-content: center;
                 margin: 35vh auto;
@@ -29,6 +38,11 @@
     </head>
     <body>
         <div class="login__background">
+            <div class="login__information">
+                <u>Recommended Login Details</u>
+                <p>Email: {{ $user[0]->email }}</p>
+                <p>Password: password</p>
+            </div>
             <div class="form__container">
                 <form method="POST" action="/login">
                     @csrf

@@ -9,26 +9,29 @@ use Illuminate\Support\Facades\DB;
 class EventController extends Controller
 {
     public function home(){
-        $tomorrow = date("l");
+        $tomorrow = date("l", strtotime("tomorrow"));
         return view('home', [
-            'new_events' => Event::latest()->take(3)->get(),
+            'new_events' => Event::latest()->take(3)->with('event_images')->get(),
             'tomorrow_events' => Event::join('event_opening_times', 'events.id', '=', 'event_opening_times.event_id')
                 ->where('day', $tomorrow)
                 ->select('events.*')
                 ->take(6)
+                ->with('event_images')
                 ->get()
         ]);
     }
 
     public function index() {
         return view('events/events', [
-            'events' => Event::all()
+            'events' => Event::with('event_images')->get()
         ]);
     }
 
-    public function show(Event $event) {
+    public function show($slug) {
         return view('events/event', [
-            'event' => $event
+            'event' => Event::where('slug', $slug)
+                ->with('event_images','event_opening_times')
+                ->get()
         ]);
     }
 
