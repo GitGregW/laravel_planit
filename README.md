@@ -3,7 +3,7 @@
 ## About Planit
 
 Planit allows people to find events with the accessibility to book and manage events to their own planner. Additionally it allows people to create new events.
-[The following personal project is a demonstration of my existing experience of applying Full Stack Web Development along with applying new learning of tools, frameworks and libaries such as Git, Figma, Sass and Laravel.]
+[The following personal project is a demonstration of my existing experience of applying Full Stack Web Development along with applying new learning of tools, frameworks and libraries such as Git, Figma, Sass and Laravel.]
 
 ## Learning Figma
 
