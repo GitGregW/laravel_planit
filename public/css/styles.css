@@ -4,18 +4,44 @@
   font-weight: 300;
   src: url(/fonts/Bungee-Regular.ttf?3d95fa68283102c29cd938f1f5cbc0d0);
 }
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
   div.navbar__container {
-    padding: 0.25em 1em;
-    background-color: #876984;
+    padding: 0.75em 4em;
+  }
+
+  nav.navbar {
+    margin: 0 1em;
+    gap: 1.5em;
+  }
+
+  div.navbar__title > a {
+    display: none;
+  }
+
+  div.navbar__title > img {
+    display: block;
+  }
+}
+@media (min-width: 1000px) {
+  div.navbar__title > a {
+    display: block;
+  }
+
+  div.navbar__title > img {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  div.navbar__container {
+    padding: 0.75em 0.75em;
   }
 
   nav.navbar {
     margin: 0;
-    gap: 1.25em;
+    gap: 0.25em;
   }
 }
-div.navbar__container {
+.navbar__container {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
@@ -25,7 +51,7 @@ div.navbar__container {
   z-index: 5;
 }
 
-nav.navbar {
+.navbar {
   display: inline-flex;
   gap: 3em;
   font-size: 0.9em;
@@ -36,27 +62,31 @@ nav.navbar--right {
   float: right;
 }
 
-a.navbar__link--active {
-  color: #FF005C;
-  border: 3px solid #FF005C;
-  border-radius: 3em;
-}
-
 a.navbar__link {
   color: white;
   text-decoration: none;
   padding: 0.25em 0.75em;
 }
 
+a.navbar__link--active {
+  border: 0.2em solid #FF005C;
+  border-radius: 3em;
+  padding: 0.05em 0.75em;
+}
+
 a.navbar__link--title {
   padding: 0;
+}
+
+a.navbar__link--auth {
+  color: lightskyblue;
 }
 
 a:hover.navbar__link {
   color: #FF005C;
 }
 
-div.navbar__title {
+.navbar__title {
   float: right;
   font-size: 2em;
   line-height: 1.5em;
@@ -167,22 +197,12 @@ div.card__content {
 }
 
 h2.card__title {
-  /*
-  position: absolute;
-  text-align: center;
-  width: auto;
-  top: $card-image-height - 22px;
-  color: white;
-  background: rgba(196, 196, 196, 0.6);
-  width: 100%;
-  padding: 0 15px 0 15px;
-  margin: 0 0 0 5%;
-  font-size: 14px;
-  */
   box-sizing: border-box;
   text-align: center;
   margin: 0;
   font-size: 16px;
+  padding: 0 1em;
+  background: white;
 }
 
 p.card__text {

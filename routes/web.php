@@ -39,7 +39,7 @@ Route::get('events/{event:slug}', [EventController::class, 'show']);
 // Route::patch('events/{event:slug}', [EventController::class, 'update']);
 // Route::delete('events/{event:slug}', [EventController::class, 'destroy']);
 
-Route::get('bookings/{user:id}/review/{selected_date?}', [EventBookingController::class, 'edit']);
+Route::get('bookings/{user:id}/review/{selected_date?}', [EventBookingController::class, 'edit'])->name('booking.edit');
 Route::get('bookings/{event:slug}/{selected_date?}', [EventBookingController::class, 'show']);
 Route::post('bookings/{event:id}', [EventBookingController::class, 'store']);
 Route::delete('bookings/{id}', [EventBookingController::class, 'destroy']);

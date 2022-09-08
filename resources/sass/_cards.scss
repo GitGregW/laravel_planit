@@ -61,22 +61,12 @@ div.card__content{
 }
 
 h2.card__title{
-    /*
-    position: absolute;
-    text-align: center;
-    width: auto;
-    top: $card-image-height - 22px;
-    color: white;
-    background: rgba(196, 196, 196, 0.6);
-    width: 100%;
-    padding: 0 15px 0 15px;
-    margin: 0 0 0 5%;
-    font-size: 14px;
-    */
     box-sizing: border-box;
     text-align: center;
     margin: 0;
     font-size: 16px;
+    padding: 0 1em;
+    background: white;
 }
 
 p.card__text{

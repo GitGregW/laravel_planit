@@ -7,17 +7,18 @@
     <nav class="navbar">
         <a class="navbar__link {{ request()->is('events') ? 'navbar__link--active' : '' }}"
             href="/events">Explore</a>
-        <a class="navbar__link {{ request()->is('plans') ? 'navbar__link--active' : '' }}"
+        <a class="navbar__link {{ request()->routeIs('booking.edit') ? 'navbar__link--active' : '' }}"
             href="{{ auth()->user() ? '/bookings/'.auth()->user()->id.'/review' : '/login' }}">Plans</a>
     </nav>
 
     <div class="navbar__title">
+        <img style="width: 28px; height: 28px; margin: 7px 0;" src="/icons/planet-earth.svg" />
         <a class="navbar__link navbar__link--title" href="/"><span style="color:yellow;">PLAN</span>IT.</a>
     </div>
 
     <nav class="navbar navbar--right">
         @auth
-        <a href="#">{{ auth()->user()->name }}</a>
+            <a class="navbar__link navbar__link--auth" href="#">{{ auth()->user()->name }}</a>
             <a class="navbar__link" href="/logout">Logout</a>
         @else
             <a class="navbar__link {{ request()->is('login') ? 'navbar__link--active' : '' }}"

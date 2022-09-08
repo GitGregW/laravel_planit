@@ -10,7 +10,7 @@
                 *Also, include inline error styling i.e. red form element border --}}
         @endif
         <div class="event__title"><h2>Add Your Event</h2></div>
-        <form id="event_form" class="event__form" method="POST" action="/events/create">
+        <form id="event_form" class="event__form" method="POST" action="/events">
             @csrf
             <div class="event__form__header">
                 <input id="title"  type="text" name="title"

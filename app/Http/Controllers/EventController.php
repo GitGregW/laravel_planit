@@ -54,6 +54,8 @@ class EventController extends Controller
         ]);
         $event["slug"] = strtolower(str_replace(' ','_', request()->input('title')));
         $event["rating"] = '2.5';
+        if(auth()->user()) $event["user_id"] = auth()->user()->id;
+        else $event["user_id"] = 0;
 
         $id = Event::create($event)->id;
 

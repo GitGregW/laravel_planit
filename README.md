@@ -1,3 +1,55 @@
+<p align="center"><img style="width: 56px; height: 56px; margin: 7px 0;" src="public/icons/planet-earth.svg" /></p>
+
+## About Planit
+
+Planit allows people to find events with the accessibility to book and manage events to their own planner. Additionally it allows people to create new events.
+[The following personal project is a demonstration of my existing experience of applying Full Stack Web Development along with applying new learning of tools, frameworks and libaries such as Git, Figma, Sass and Laravel.]
+
+## Learning Figma
+
+Figma has found to be a useful design tool before writing any code as this allows me (and for anyone else) to visualise the frontend through wireframing and also to plan the users journey.
+<img src="public/images/readme/Planit_Figma.jpg" />
+
+## Planit: The Users Journey
+
+- The User or Guest browses events
+
+Events explored on the homepage appear in two sections but each are filtered differently: by recently added or by event opening times for tomorrow. Each filtered events section is a Laravel Component named 'Events' that takes an object property and loop outputs the Event.
+- The User or Guest views an event
+- The User can access the event calendar, alongside this is the users planner (Guest redirect to Login)
+
+Both the calendar and planner stem from the same Laravel component named 'Calendar' however they each appear in a different format, calendar or a schedule, provided props decide the format through defined named css classes.
+- The User can book an event for a given day and time
+
+A User selects a day on the Event calendar which results in triggering a JavaScript event to build a CSRF protected form consisting of a dropdown of  hourly opening time slots, the user may proceed to confirm/book the event or click another day which removes the form from DOM.
+
+- The User is then redirected to review their bookings
+
+The User can view and cancel existing bookings seamlessly due to the cancellation form appears simply as a button in a modal where once clicked submits through an AJAX request. 
+<img src="public/images/readme/Planit_User_Event_Booking-journey.gif" />
+
+## Creating an Event
+
+This partial demonstration of creating an event displays JavaScript form elements built from scratch
+<img src="public/images/readme/Planit_views_events_create-JS.gif" />
+
+## Responsive Design
+
+Example of mobile responsive design:
+- Exploring Events
+- Reviewing Planner
+<img src="public/images/readme/Planit_views-responsive.gif" />
+
+## Final Thoughts
+
+I've acheived completion of developing an Event booking system which appears similar to my Figma design. I do however acknowledge there is room for additional content in every aspect of the journey, having informally followed the MoSCoW method principles to allow prioritisation of development tasks there are further additions I'd like to make if assigning it more time, but not limited to: 1. Include Unsplash Image API to search and store images based on category tags for creating Events, and 2. Include Mapbox API for pinning Event location.
+
+I hope you've enjoyed this project demonstration and I look forward to any questions or feedback.
+
+Greg Wheat
+
+<hr />
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
